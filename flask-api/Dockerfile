@@ -6,7 +6,7 @@ COPY requirements.txt .
 
 RUN pip install -r requirements.txt
 
-VOLUME [ "/data" ]
+# VOLUME [ "/data" ]
 
 COPY . .
 
