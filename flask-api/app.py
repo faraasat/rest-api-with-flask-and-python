@@ -40,7 +40,7 @@ def create_app(db_url=None):
     # initializes SQLAlchemy
     db.init_app(app)
 
-    migrate = Migrate(app, db, compare_type=True)
+    migrate = Migrate(app, db, compare_type=True, render_as_batch=True)
 
     api = Api(app)
 
