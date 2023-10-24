@@ -1,9 +1,13 @@
+# flask db init -> to create a migrations folder
+# flask db migrate -> to migrate the database and create script
+# flask db upgrade -> to apply the migration and create tables
 import os
 # import secrets
 
 from flask import Flask, jsonify
 from flask_smorest import Api
 from flask_jwt_extended import JWTManager
+from flask_migrate import Migrate
 
 from db import db
 from blocklist import BLOCKLIST
@@ -33,6 +37,8 @@ def create_app(db_url=None):
 
     # initializes SQLAlchemy
     db.init_app(app)
+
+    migrate = Migrate(app, db)
 
     api = Api(app)
 
@@ -76,10 +82,11 @@ def create_app(db_url=None):
     def missing_token_callback(error):
         return (jsonify({"description": "Request does not contain an access token.", "error": "authorization_failed"}), 401)
 
-    # @app.before_request
-    with app.app_context():
-        # def create_tables():
-        db.create_all()
+    # since we have used flask-migrate we no longer need to use this
+    # # @app.before_request
+    # with app.app_context():
+    #     # def create_tables():
+    #     db.create_all()
 
     api.register_blueprint(ItemBlueprint)
     api.register_blueprint(StoreBlueprint)

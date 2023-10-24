@@ -4,14 +4,20 @@ WORKDIR /app
 
 COPY requirements.txt .
 
-RUN pip install -r requirements.txt
+# for development
+# RUN pip install -r requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # VOLUME [ "/data" ]
 
 COPY . .
 
-EXPOSE 5000
+# for development
+# EXPOSE 5000
 
-CMD ["flask", "run", "--host", "0.0.0.0"]
+# for development
+# CMD ["flask", "run", "--host", "0.0.0.0"]
+CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:create_app()"]
 
-# docker run -dp 5005:500 -w /app -v "$(pwd):/app" <name>
+# -c "flask run means" don't run the cmd in file rather run this command
+# docker run -dp 5005:500 -w /app -v "$(pwd):/app" <name> sh -c "flask run"
