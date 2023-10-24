@@ -17,7 +17,7 @@ COPY . .
 
 # for development
 # CMD ["flask", "run", "--host", "0.0.0.0"]
-CMD ["gunicorn", "--bind", "0.0.0.0:80", "app:create_app()"]
+CMD ["/bin/bash", "docker-entrypoint.sh"]
 
 # -c "flask run means" don't run the cmd in file rather run this command
 # docker run -dp 5005:500 -w /app -v "$(pwd):/app" <name> sh -c "flask run"
