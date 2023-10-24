@@ -9,3 +9,6 @@ flask-migrate
 gunicorn
 psycopg2
 requests
+# redis queue (celery can also be used)
+redis
+rq

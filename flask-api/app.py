@@ -1,6 +1,3 @@
-# flask db init -> to create a migrations folder
-# flask db migrate -> to migrate the database and create script
-# flask db upgrade -> to apply the migration and create tables
 import os
 # import secrets
 
@@ -9,6 +6,8 @@ from flask_smorest import Api
 from flask_jwt_extended import JWTManager
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+from rq import Queue
+import redis
 
 from db import db
 from blocklist import BLOCKLIST
@@ -23,6 +22,10 @@ def create_app(db_url=None):
     # filename and this variable name must match
     app = Flask(__name__)
     load_dotenv()
+
+    connection = redis.from_url(os.getenv("REDIS_URL"))
+
+    app.queue = Queue("email", connection=connection)
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Stores REST API"
